@@ -30,4 +30,24 @@ jobs:
                 fi
                     echo "Everything is good ! Keep on coding !"
                     exit 0
-  
+    compile:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v2
+        - name: Compile
+          run: make
+      
+    run-tests:
+      runs-on: ubuntu-latest
+      container:
+        image: ghcr.io/epitech/epitest-docker:latest
+      needs: [compile, coding-style]
+      steps:
+        - uses: actions/checkout@v2
+        - name: compile
+          run: make compile_tests
+        - name: run tests
+          run: ./unit_tests
+        - name: Run integration tests
+          run: ./integration_testing
